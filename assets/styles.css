@@ -463,9 +463,9 @@ section{ padding:clamp(40px,6vw,72px) 0; border-top:1px solid var(--line); }
 .who-top p{ font-size:17px; color:var(--ink-soft); line-height:1.65; max-width:46ch; }
 .who-top .btn{ margin-top:24px; }
 .fit-figure{ font-family:var(--font-mono); text-align:right; }
-.fit-figure .num{ font-family:var(--font-display); font-size:clamp(40px,6vw,64px); font-weight:500; line-height:1; color:var(--ink); }
+.fit-figure .num{ font-family:var(--font-display); font-size:clamp(40px,6vw,64px); font-weight:500; line-height:1; color:var(--ink); font-variant-numeric:lining-nums tabular-nums; }
 .fit-figure .lbl{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); margin-top:8px; display:block; }
-.fit-figure .count{ font-variant-numeric:tabular-nums; }
+.fit-figure .count{ font-variant-numeric:lining-nums tabular-nums; }
 
 .fit-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(16px,2vw,28px); }
 .fit-item, .bo-item{

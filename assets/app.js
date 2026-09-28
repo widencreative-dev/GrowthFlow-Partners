@@ -76,7 +76,7 @@
       }
       requestAnimationFrame(step);
     }
-    if('IntersectionObserver' in window){
+    if(!reduced && 'IntersectionObserver' in window){
       counters.forEach(function(el){
         el.textContent = '0';
       });

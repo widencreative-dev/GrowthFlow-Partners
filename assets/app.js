@@ -155,6 +155,12 @@
         // Dispara o POST antes de trocar a tela: o FormData e lido aqui, com o
         // formulario ainda visivel, e o keepalive sobrevive ao redirecionamento.
         leadSend();
+        // Conversao para o GTM (sem dados pessoais). Bot com honeypot cheio nao conta.
+        var hp = document.getElementById('lf-website');
+        if(!(hp && hp.value)){
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'generate_lead', form_id: 'leadForm', revenue_range: leadForm.elements['revenue'].value });
+        }
         leadDone();
       });
     }

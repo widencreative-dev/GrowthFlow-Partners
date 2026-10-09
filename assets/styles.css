@@ -330,7 +330,7 @@ nav.primary a:hover::after{ transform:scaleX(1); }
   font-size:clamp(38px,5.6vw,74px);
   line-height:1.03;
   font-weight:500;
-  max-width:16ch;
+  max-width:24ch;
 }
 .hero h1 .muted{
   color:var(--ink-faint);
@@ -702,6 +702,118 @@ blockquote.founder-quote{
 .final-cta p{ margin:20px auto 0; max-width:44ch; color:var(--ink-soft); font-size:17px; }
 .final-cta .btn{ margin-top:32px; }
 
+/* ---------- Lead form (final CTA) ---------- */
+/* Ancora do hero: compensa o cabecalho fixo quando o Lenis esta desligado. */
+.final-cta{ scroll-margin-top:96px; }
+.lead-form-card{
+  margin:clamp(32px,4vw,44px) auto 0;
+  max-width:720px;
+  text-align:left;
+  padding:clamp(24px,3.2vw,38px);
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  box-shadow:0 18px 50px -24px var(--shadow);
+}
+/* Honeypot: fora da tela em vez de display:none, porque parte dos bots
+   ignora campos escondidos por display e cairia fora da armadilha. */
+.lf-hp{
+  position:absolute;
+  left:-9999px;
+  width:1px; height:1px;
+  overflow:hidden;
+}
+.lf-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px clamp(16px,2.2vw,24px);
+}
+.lf-field{ display:flex; flex-direction:column; gap:8px; min-width:0; }
+.lf-field-full{ grid-column:1 / -1; }
+.lf-field label{
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.lf-optional{
+  margin-left:6px;
+  letter-spacing:.06em;
+  text-transform:none;
+  color:var(--ink-faint);
+  font-style:italic;
+}
+.lead-form input,
+.lead-form select{
+  width:100%;
+  font-family:var(--font-body);
+  font-size:16px;
+  color:var(--ink);
+  background:var(--paper-raised);
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius);
+  padding:13px 14px;
+  transition:border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+.lead-form input::placeholder{ color:var(--ink-faint); }
+.lead-form select{
+  appearance:none;
+  padding-right:40px;
+  cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23707a8c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 13px center;
+  background-size:17px;
+}
+.lead-form select:invalid{ color:var(--ink-faint); }
+.lead-form input:hover,
+.lead-form select:hover{ border-color:var(--ink-faint); }
+.lead-form input:focus-visible,
+.lead-form select:focus-visible{
+  outline:none;
+  background:var(--paper);
+  border-color:var(--signal);
+  box-shadow:0 0 0 3px color-mix(in oklch, var(--signal) 28%, transparent);
+}
+/* So marca erro depois de uma tentativa de envio. */
+.lead-form.is-validated input:invalid,
+.lead-form.is-validated select:invalid{
+  border-color:oklch(58% .19 25);
+  box-shadow:0 0 0 3px oklch(58% .19 25 / 16%);
+}
+.final-cta .lf-submit{
+  margin-top:clamp(22px,2.6vw,28px);
+  width:100%;
+}
+.final-cta .lf-note{
+  margin:14px 0 0;
+  font-size:13.5px;
+  color:var(--ink-faint);
+  text-align:center;
+  max-width:none;
+}
+.lf-success{ text-align:center; padding:clamp(8px,2vw,20px) 0; }
+.lf-success svg{
+  width:30px; height:30px;
+  color:var(--signal);
+  margin-bottom:14px;
+}
+.lf-success h3{ font-size:22px; font-weight:600; }
+.final-cta .lf-success p{ margin-top:10px; font-size:16px; max-width:38ch; }
+.lf-success a{
+  color:var(--ink);
+  font-weight:600;
+  text-decoration:none;
+  border-bottom:1px solid var(--signal);
+  transition:color .2s ease;
+}
+.lf-success a:hover{ color:color-mix(in srgb, var(--signal) 68%, black); }
+
+@media (max-width:620px){
+  .lf-grid{ grid-template-columns:1fr; }
+}
+
 /* ---------- Footer ---------- */
 footer.site{
   position:relative;
@@ -822,4 +934,127 @@ section:not(.hero), footer.site{ position:relative; }
   0%{ box-shadow:0 0 0 0 color-mix(in oklch, var(--signal) 55%, transparent), 0 10px 28px -8px oklch(19% .055 265 / 45%); }
   70%{ box-shadow:0 0 0 18px color-mix(in oklch, var(--signal) 0%, transparent), 0 10px 28px -8px oklch(19% .055 265 / 45%); }
   100%{ box-shadow:0 0 0 0 color-mix(in oklch, var(--signal) 0%, transparent), 0 10px 28px -8px oklch(19% .055 265 / 45%); }
+}
+
+/* ---------- Legal (privacy.html) ---------- */
+/* Faixa escura de abertura. Em vez de recolorir cada filho, a secao redefine os
+   tokens de tinta: .eyebrow, bordas e textos herdados ja saem legiveis no escuro. */
+.legal-hero{
+  --ink: var(--panel-paper);
+  --ink-soft: color-mix(in oklch, var(--panel-paper) 74%, transparent);
+  --ink-faint: color-mix(in oklch, var(--panel-paper) 56%, transparent);
+  --line: color-mix(in oklch, var(--panel-paper) 18%, transparent);
+  --line-strong: color-mix(in oklch, var(--panel-paper) 32%, transparent);
+  position:relative;
+  overflow:hidden;
+  border-top:none;
+  background:var(--panel-ink);
+  color:var(--panel-paper);
+  padding-top:calc(clamp(40px,6vw,72px) + 76px);
+  padding-bottom:clamp(40px,6vw,72px);
+}
+/* Colchete decorativo, o mesmo gesto do quadrado verde do restante do site. */
+.legal-hero::after{
+  content:"";
+  position:absolute; top:clamp(92px,11vw,132px); right:clamp(-20px,2vw,40px);
+  width:clamp(90px,12vw,150px); aspect-ratio:1;
+  border-top:2px solid var(--signal);
+  border-right:2px solid var(--signal);
+  opacity:.55;
+  pointer-events:none;
+}
+.legal-hero .wrap{ position:relative; z-index:1; }
+.legal-hero h1{
+  margin-top:24px;
+  font-size:clamp(36px,5.4vw,66px);
+  line-height:1.04;
+  font-weight:500;
+}
+.legal-hero h1 em{ font-style:italic; font-weight:400; color:var(--signal); }
+.legal-meta{
+  margin-top:clamp(24px,3.4vw,34px);
+  display:flex; flex-wrap:wrap; gap:10px 12px;
+}
+.legal-meta span{
+  font-family:var(--font-mono);
+  font-size:11.5px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ink-soft);
+  border:1px solid var(--line-strong);
+  border-radius:999px;
+  padding:7px 15px;
+}
+
+.legal-intro{
+  border-top:none;
+  background:oklch(96.5% .004 95);
+}
+.legal-intro .wrap{ display:flex; justify-content:center; }
+.legal-intro-card{
+  max-width:62ch;
+  text-align:center;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-top:2px solid var(--signal);
+  border-radius:var(--radius-lg);
+  padding:clamp(22px,3vw,34px);
+  font-size:15.5px; line-height:1.65;
+  color:var(--ink-soft);
+  box-shadow:0 14px 34px -26px var(--shadow);
+}
+.legal-intro-card strong{ color:var(--ink); font-weight:600; }
+
+/* Coluna de leitura mais estreita que --content-w: texto corrido a 1180px cansa. */
+.legal-body{ border-top:none; }
+.legal-doc{ max-width:760px; margin:0 auto; }
+.legal-block{ padding:clamp(26px,3.6vw,40px) 0; border-top:1px solid var(--line); }
+.legal-block:first-child{ border-top:none; padding-top:0; }
+.legal-block h2{ margin-top:14px; font-size:clamp(21px,2.5vw,27px); font-weight:600; max-width:26ch; }
+.legal-block p{ margin-top:16px; font-size:15.5px; line-height:1.65; color:var(--ink-soft); }
+.legal-block p.legal-lead{ color:var(--ink); font-weight:600; }
+.legal-block strong{ color:var(--ink); font-weight:600; }
+
+.legal-defs{ margin-top:18px; display:grid; gap:18px; }
+.legal-defs > div{ padding-left:16px; border-left:2px solid color-mix(in oklch, var(--signal) 50%, transparent); }
+.legal-defs dt{ font-size:15.5px; font-weight:600; color:var(--ink); }
+.legal-defs dd{ margin:5px 0 0; font-size:15.5px; line-height:1.65; color:var(--ink-soft); }
+
+.legal-list{ margin-top:16px; display:grid; gap:11px; }
+.legal-list li{
+  display:flex; align-items:flex-start; gap:12px;
+  font-size:15.5px; line-height:1.65; color:var(--ink-soft);
+}
+.legal-list li::before{
+  content:"";
+  width:6px; height:6px; margin-top:.58em;
+  background:var(--signal); border-radius:1px; flex:none;
+}
+
+.legal-label{
+  font-family:var(--font-mono);
+  font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--ink-faint);
+}
+
+.legal-contact{
+  border-top:2px solid var(--signal);
+  background:color-mix(in oklch, var(--panel-ink) 7%, var(--paper));
+}
+.legal-contact-inner{ max-width:760px; margin:0 auto; }
+.legal-contact h2{ margin-top:14px; font-size:clamp(23px,2.9vw,32px); font-weight:500; max-width:22ch; }
+.legal-contact-grid{
+  margin-top:28px;
+  display:grid; gap:20px;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+}
+.legal-contact-item{ padding-left:16px; border-left:2px solid var(--signal); }
+.legal-contact-item a{
+  display:inline-block; margin-top:7px;
+  font-size:17px; font-weight:600; color:var(--ink); text-decoration:none;
+  transition:color .2s ease;
+}
+.legal-contact-item a:hover{ color:color-mix(in srgb, var(--signal) 68%, black); }
+
+@media (max-width:600px){
+  .legal-hero::after{ display:none; }
+  .legal-meta span{ font-size:10.5px; padding:6px 12px; }
 }

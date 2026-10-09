@@ -10,8 +10,14 @@
     });
 
     // Link ativo no cabeçalho conforme a seção visível
+    // So ancoras desta pagina entram no spy. Em paginas internas (privacy.html)
+    // o href vira "index.html#secao", que nao e seletor valido: querySelector
+    // lancaria SyntaxError e levaria junto todo o resto deste bloco.
     var navLinks = document.querySelectorAll('nav.primary a');
-    var spy = [].map.call(navLinks, function(a){ return document.querySelector(a.getAttribute('href')); });
+    var spy = [].map.call(navLinks, function(a){
+      var href = a.getAttribute('href') || '';
+      return href.charAt(0) === '#' && href.length > 1 ? document.querySelector(href) : null;
+    });
     function updateActive(){
       var y = window.scrollY + window.innerHeight * 0.35, cur = -1;
       spy.forEach(function(s, i){ if(s && s.offsetTop <= y) cur = i; });
@@ -105,4 +111,64 @@
       }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
       items.forEach(function(el){ io.observe(el); });
     }
+
+    // Formulario do final da pagina
+    var leadForm = document.getElementById('leadForm');
+    if(leadForm){
+      var leadSuccess = document.getElementById('leadFormSuccess');
+      var leadEndpoint = leadForm.getAttribute('data-endpoint');
+      var leadRedirect = leadForm.getAttribute('data-redirect');
+
+      // Grava o lead na planilha pelo webhook n8n (ver data-endpoint no form).
+      function leadSend(){
+        if(!leadEndpoint) return;
+        // 'no-cors' evita o preflight: o FormData vai como multipart/form-data,
+        // que o no Webhook do n8n parseia direto. O preco e a resposta opaca:
+        // nao da para saber daqui se gravou. Para ler o resultado de verdade,
+        // ligar Allowed Origins (CORS) no no Webhook e trocar para mode:'cors'.
+        // 'keepalive' mantem o POST vivo apos o redirecionamento para o calendario.
+        try {
+          fetch(leadEndpoint, {
+            method: 'POST',
+            body: new FormData(leadForm),
+            mode: 'no-cors',
+            keepalive: true
+          }).catch(function(){});
+        } catch(err){ /* navegador antigo sem fetch: o lead se perde, seguimos */ }
+      }
+
+      // Mostra o agradecimento e manda o lead para a pagina de agendamento.
+      function leadDone(){
+        leadForm.hidden = true;
+        leadSuccess.hidden = false;
+        if(!leadRedirect) return;
+        // O painel traz um link manual caso o navegador bloqueie o redirecionamento.
+        setTimeout(function(){ window.location.href = leadRedirect; }, 1200);
+      }
+
+      leadForm.addEventListener('submit', function(e){
+        // Marca os campos invalidos so a partir da primeira tentativa de envio.
+        leadForm.classList.add('is-validated');
+        // Invalido: nao intercepta, o proprio navegador mostra a mensagem do campo.
+        if(!leadForm.checkValidity()) return;
+        e.preventDefault();
+        // Dispara o POST antes de trocar a tela: o FormData e lido aqui, com o
+        // formulario ainda visivel, e o keepalive sobrevive ao redirecionamento.
+        leadSend();
+        leadDone();
+      });
+    }
+
+    // CTAs que levam ao formulario: apos a rolagem, o cursor cai no primeiro campo.
+    // So no mouse: no touch isso abriria o teclado no meio da rolagem.
+    var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    document.querySelectorAll('[data-form-jump]').forEach(function(a){
+      a.addEventListener('click', function(){
+        var first = document.getElementById('lf-name');
+        if(!first || !finePointer) return;
+        setTimeout(function(){
+          try { first.focus({ preventScroll:true }); } catch(err){ first.focus(); }
+        }, reduced ? 120 : 900);
+      });
+    });
   })();

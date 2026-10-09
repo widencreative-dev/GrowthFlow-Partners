@@ -10,8 +10,14 @@
     });
 
     // Link ativo no cabeçalho conforme a seção visível
+    // So ancoras desta pagina entram no spy. Em paginas internas (privacy.html)
+    // o href vira "index.html#secao", que nao e seletor valido: querySelector
+    // lancaria SyntaxError e levaria junto todo o resto deste bloco.
     var navLinks = document.querySelectorAll('nav.primary a');
-    var spy = [].map.call(navLinks, function(a){ return document.querySelector(a.getAttribute('href')); });
+    var spy = [].map.call(navLinks, function(a){
+      var href = a.getAttribute('href') || '';
+      return href.charAt(0) === '#' && href.length > 1 ? document.querySelector(href) : null;
+    });
     function updateActive(){
       var y = window.scrollY + window.innerHeight * 0.35, cur = -1;
       spy.forEach(function(s, i){ if(s && s.offsetTop <= y) cur = i; });
@@ -113,13 +119,13 @@
       var leadEndpoint = leadForm.getAttribute('data-endpoint');
       var leadRedirect = leadForm.getAttribute('data-redirect');
 
-      // Grava o lead na planilha (Apps Script, ver apps-script.gs).
+      // Grava o lead na planilha pelo webhook n8n (ver data-endpoint no form).
       function leadSend(){
         if(!leadEndpoint) return;
-        // 'no-cors' porque o Apps Script redireciona para script.googleusercontent.com
-        // e essa resposta final nao traz cabecalhos de CORS. A gravacao acontece,
-        // mas a resposta chega opaca: nao da para saber daqui se deu certo.
-        // Quem confirma e o e-mail que o proprio script envia por lead.
+        // 'no-cors' evita o preflight: o FormData vai como multipart/form-data,
+        // que o no Webhook do n8n parseia direto. O preco e a resposta opaca:
+        // nao da para saber daqui se gravou. Para ler o resultado de verdade,
+        // ligar Allowed Origins (CORS) no no Webhook e trocar para mode:'cors'.
         // 'keepalive' mantem o POST vivo apos o redirecionamento para o calendario.
         try {
           fetch(leadEndpoint, {

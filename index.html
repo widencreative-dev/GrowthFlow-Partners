@@ -21,6 +21,7 @@
       <a href="#how-we-work">How We Work</a>
       <a href="#who-we-work-with">Who We Work With</a>
       <a href="#about-sam">About Us</a>
+      <a href="#footer">Contact</a>
     </nav>
     <div class="header-actions">
       <a class="btn btn-primary" href="#contact" data-form-jump><span class="btn-label">Book a Call</span><span class="btn-hover" aria-hidden="true"><span>Book a Call</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span><span class="btn-dot" aria-hidden="true"></span></a>
@@ -348,14 +349,15 @@
       <h2>Ready to know what your numbers are actually telling you?</h2>
       <p>A 30-minute conversation. No prep required. If we're not the right fit, we'll tell you.</p>
       <div class="lead-form-card">
-        <!-- data-endpoint: URL /exec do Apps Script (ver apps-script.gs).
-             Ao editar o .gs, e preciso publicar uma "Nova versao" da implantacao,
-             senao esta URL continua rodando o codigo antigo. -->
+        <!-- data-endpoint: URL de producao do webhook n8n (/webhook/...).
+             PENDENTE: ainda aponta para o Apps Script antigo, que esta fora do ar.
+             A URL /webhook-test/ so responde com o editor do n8n escutando, e a de
+             producao so responde com o workflow Active. -->
         <form class="lead-form" id="leadForm" action="#" method="post"
               data-endpoint="https://script.google.com/macros/s/AKfycbz8GSZfO7lOjnsE5hOOYLq5xC0k65bY7zuUP14YUGoO0M_QL4BePKgU_KAEfGQhQHCM/exec"
               data-redirect="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2ZJ-9XUX0xnZsaLOWJLjMzE6iUz-YSPBt7_QBthU5EaSvK13VamRsVpIcA7kw7q-6Zlz9ZiROI">
           <!-- Honeypot anti-bot: fica fora da tela, humanos nunca preenchem.
-               O Apps Script descarta o envio quando vem com conteudo. -->
+               Chega no n8n como body.website: descartar o lead quando vier cheio. -->
           <div class="lf-hp" aria-hidden="true">
             <label for="lf-website">Website</label>
             <input id="lf-website" name="website" type="text" tabindex="-1" autocomplete="off">
@@ -433,7 +435,7 @@
         <p>© 2026 GrowthFlow Partners. All rights reserved.</p>
         <p class="footer-credit">Developed by <a href="https://widencreative.com/" target="_blank" rel="noopener">Widen Creative</a></p>
       </div>
-      <a href="#" onclick="return false">Privacy Policy</a>
+      <a href="privacy.html">Privacy Policy</a>
     </div>
   </div>
 </footer>

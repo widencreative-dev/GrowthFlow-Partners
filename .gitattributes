@@ -1,0 +1,27 @@
+# Quebras de linha: LF no repositorio, convencao do SO no working tree.
+# Todos os arquivos de texto ja estavam gravados em LF quando isto entrou,
+# entao nao houve renormalizacao. O objetivo e impedir que editores ou
+# maquinas diferentes gerem diffs de arquivo inteiro so por causa de CRLF.
+* text=auto
+
+# Explicito para os tipos do projeto, em vez de depender da heuristica do git.
+*.html   text
+*.css    text
+*.js     text
+*.json   text
+*.md     text
+*.svg    text
+*.txt    text
+
+# Binarios: nunca converter nem tentar fazer diff de texto.
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.webp   binary
+*.ico    binary
+*.mp4    binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.otf    binary

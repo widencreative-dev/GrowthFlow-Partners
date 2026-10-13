@@ -323,7 +323,6 @@ nav.primary a:hover::after{ transform:scaleX(1); }
   .hero-main{ grid-template-columns:1fr; gap:clamp(28px,5vw,40px); }
   .hero-copy{ max-width:44rem; }
   .hero-form{ max-width:560px; margin-top:0; }
-  .hero-form .hero-ctas{ margin-top:14px; }
 }
 
 .hero-badge{
@@ -365,18 +364,6 @@ nav.primary a:hover::after{ transform:scaleX(1); }
   color:var(--ink-soft);
   max-width:48ch;
 }
-.hero-ctas{
-  margin-top:30px;
-  display:flex; gap:16px; flex-wrap:wrap;
-}
-/* Escondido no desktop de duas colunas: ali o form ja e a unica acao do hero.
-   Fica visivel quando o hero empilha (<=1024px), logo abaixo do card.
-   min-width em vez de sobrescrever na media query: assim a regra nao depende
-   da ordem em que os blocos aparecem no arquivo. */
-@media (min-width:1025px){
-  .hero-form .hero-ctas{ display:none; }
-}
-
 .hero-strip{
   margin-top:clamp(36px,5vw,60px);
   border-top:1px solid var(--line);
@@ -1083,6 +1070,8 @@ section:not(.hero), footer.site{ position:relative; }
   }
   .lead-form select{ padding-right:34px; background-position:right 10px center; }
   .lf-submit{ margin-top:11px; padding:11px 18px 11px 30px; font-size:13.5px; }
-  .hero-form .hero-ctas{ margin-top:9px; }
-  .hero-ctas .btn{ padding:11px 20px 11px 32px; font-size:13.5px; }
+
+  /* Botao de ligacao um pouco mais baixo. 10px e o piso seguro: abaixo disso
+     ele encosta no indicador de home do iPhone e na barra do Safari. */
+  .call-fab{ bottom:10px; right:14px; }
 }

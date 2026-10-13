@@ -364,6 +364,13 @@ nav.primary a:hover::after{ transform:scaleX(1); }
   color:var(--ink-soft);
   max-width:48ch;
 }
+
+/* So no desktop de duas colunas, abaixo da lede. No mobile o hero termina
+   no formulario, entao o botao fica fora. */
+.hero-ctas{ display:none; }
+@media (min-width:1025px){
+  .hero-ctas{ margin-top:30px; display:flex; gap:16px; flex-wrap:wrap; }
+}
 .hero-strip{
   margin-top:clamp(36px,5vw,60px);
   border-top:1px solid var(--line);
